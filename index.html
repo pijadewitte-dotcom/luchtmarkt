@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Luchtmarkt</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Luchtmarkt</p>
+        <h1>Verhuur de m2 lucht boven je dak</h1>
+      </div>
+      <nav aria-label="Hoofdmenu">
+        <a href="#aanbod">Aanbod</a>
+        <a href="#claim">Claim daklucht</a>
+        <a href="#campagne">Campagne</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="workspace">
+        <div class="air-map" aria-label="Interactieve stadskaart met daklucht kavels">
+          <canvas id="cityCanvas" width="960" height="560"></canvas>
+          <div class="map-panel">
+            <span class="status-dot"></span>
+            <span id="selectedPlot">Kies een dakvlak op de kaart</span>
+          </div>
+        </div>
+
+        <aside class="inspector" aria-label="Geselecteerde luchtkavel">
+          <p class="eyebrow">Live kavel</p>
+          <h2 id="plotName">Canal Roof A12</h2>
+          <dl>
+            <div>
+              <dt>Beschikbaar</dt>
+              <dd id="plotArea">118 m2</dd>
+            </div>
+            <div>
+              <dt>Hoogtezone</dt>
+              <dd id="plotHeight">4-14 m</dd>
+            </div>
+            <div>
+              <dt>Prijs</dt>
+              <dd id="plotPrice">EUR 34 / m2 / maand</dd>
+            </div>
+            <div>
+              <dt>Verificatie</dt>
+              <dd id="plotStatus">Dakscan + eigendom ok</dd>
+            </div>
+          </dl>
+          <button class="primary" id="reserveBtn">Reserveer voor campagne</button>
+          <button class="secondary" id="ownerBtn">Ik bezit dit dak</button>
+        </aside>
+      </section>
+
+      <section class="metrics" aria-label="Platform statistieken">
+        <article>
+          <strong>14.820 m2</strong>
+          <span>claimbare lucht in pilotsteden</span>
+        </article>
+        <article>
+          <strong>EUR 91.400</strong>
+          <span>maandelijkse huurwaarde</span>
+        </article>
+        <article>
+          <strong>38</strong>
+          <span>gecontroleerde daklocaties</span>
+        </article>
+        <article>
+          <strong>6.2 dagen</strong>
+          <span>gemiddelde goedkeuring</span>
+        </article>
+      </section>
+
+      <section class="split" id="aanbod">
+        <div>
+          <div class="section-title">
+            <p class="eyebrow">Marktplaats</p>
+            <h2>Beschikbare daklucht</h2>
+          </div>
+          <div class="filters" role="group" aria-label="Filters">
+            <button class="chip active" data-filter="all">Alles</button>
+            <button class="chip" data-filter="balloon">Ballonnen</button>
+            <button class="chip" data-filter="pole">Palen</button>
+            <button class="chip" data-filter="banner">Banners</button>
+          </div>
+          <div class="listing-grid" id="listingGrid"></div>
+        </div>
+
+        <div class="deal-flow">
+          <div class="section-title">
+            <p class="eyebrow">Escrow flow</p>
+            <h2>Van claim tot uitbetaling</h2>
+          </div>
+          <ol class="steps">
+            <li><strong>1. Eigendom</strong><span>Adres, kadasterbewijs en dakrechten worden gekoppeld.</span></li>
+            <li><strong>2. Veiligheid</strong><span>Windlast, montagepunt en gemeentelijke regels krijgen een score.</span></li>
+            <li><strong>3. Contract</strong><span>Bedrijf betaalt borg; eigenaar krijgt reservering.</span></li>
+            <li><strong>4. Live bewijs</strong><span>Foto, sensor of inspectie activeert de maandelijkse payout.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="forms">
+        <form class="claim-form" id="claim" aria-label="Daklucht claimen">
+          <div class="section-title">
+            <p class="eyebrow">Voor eigenaars</p>
+            <h2>Claim je luchtlaag</h2>
+          </div>
+          <label>
+            Adres
+            <input id="address" name="address" placeholder="Kerkstraat 12, Antwerpen" required>
+          </label>
+          <div class="form-row">
+            <label>
+              Dakoppervlak m2
+              <input id="roofArea" name="roofArea" type="number" value="86" min="10">
+            </label>
+            <label>
+              Vrije hoogte m
+              <input id="airHeight" name="airHeight" type="number" value="12" min="3">
+            </label>
+          </div>
+          <label>
+            Toegestane installatie
+            <select id="installation" name="installation">
+              <option>Reclameballon</option>
+              <option>Lichte mast</option>
+              <option>Doek of bannerframe</option>
+              <option>Event-installatie</option>
+            </select>
+          </label>
+          <button class="primary" type="submit">Bereken opbrengst</button>
+          <output id="claimOutput">Geschatte opbrengst: EUR 2.924 per maand</output>
+        </form>
+
+        <form class="campaign-form" id="campagne" aria-label="Campagne plannen">
+          <div class="section-title">
+            <p class="eyebrow">Voor bedrijven</p>
+            <h2>Plan een luchtcampagne</h2>
+          </div>
+          <label>
+            Doel
+            <select id="campaignGoal" name="campaignGoal">
+              <option>Opening winkel</option>
+              <option>Productlaunch</option>
+              <option>Festival zichtbaarheid</option>
+              <option>Lokale merkcampagne</option>
+            </select>
+          </label>
+          <div class="form-row">
+            <label>
+              Budget
+              <input id="budget" name="budget" type="range" min="1500" max="25000" step="500" value="8500">
+            </label>
+            <label>
+              Duur dagen
+              <input id="days" name="days" type="number" min="3" max="90" value="21">
+            </label>
+          </div>
+          <div class="quote">
+            <span>Match</span>
+            <strong id="matchScore">7 locaties, 82% bereik</strong>
+          </div>
+          <button class="primary" type="submit">Maak offerte</button>
+        </form>
+      </section>
+
+      <section class="ledger" aria-label="Transacties">
+        <div class="section-title">
+          <p class="eyebrow">Beheer</p>
+          <h2>Recente reserveringen</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Locatie</th>
+                <th>Installatie</th>
+                <th>Status</th>
+                <th>Waarde</th>
+                <th>Uitbetaling</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
